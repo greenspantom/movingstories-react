@@ -1,9 +1,6 @@
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination, Keyboard } from "swiper/modules";
-import "swiper/css";
-import "swiper/css/navigation";
-import "swiper/css/pagination";
-import "swiper/swiper-bundle.css"; // extra safety to ensure styles load
+import "swiper/css/bundle"; // <- 1 line includes core + navigation + pagination styles
 
 const tvIds = [
   "1057609531","1057609239","1057608752","1057608154","1057607928","1057607661",
@@ -49,7 +46,7 @@ export default function Portfolio() {
             loop
             spaceBetween={24}
             slidesPerView={1}
-            className="bg-[#0b0b0b] rounded-xl p-4"
+            className="bg-[#0b0b0b] rounded-xl p-4 w-full"
           >
             {tvIds.map((id) => (
               <VideoSlide key={id} id={id} />
@@ -68,7 +65,7 @@ export default function Portfolio() {
             loop
             spaceBetween={24}
             slidesPerView={1}
-            className="bg-[#0b0b0b] rounded-xl p-4"
+            className="bg-[#0b0b0b] rounded-xl p-4 w-full"
           >
             {corpIds.map((id) => (
               <VideoSlide key={id} id={id} />
