@@ -1,6 +1,4 @@
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation, Pagination, Keyboard } from "swiper/modules";
-import "swiper/css/bundle"; // <- 1 line includes core + navigation + pagination styles
+import { useRef } from "react";
 
 const tvIds = [
   "1057609531","1057609239","1057608752","1057608154","1057607928","1057607661",
@@ -14,18 +12,50 @@ const tvIds = [
 ];
 const corpIds = ["666763803"];
 
-function VideoSlide({ id }) {
+function Carousel({ ids }) {
+  const ref = useRef(null);
+  const scrollBy = (dir) => {
+    const el = ref.current;
+    if (!el) return;
+    const amount = el.clientWidth;
+    el.scrollBy({ left: dir * amount, behavior: "smooth" });
+  };
+
   return (
-    <SwiperSlide>
-      <div className="video-wrap">
-        <iframe
-          src={`https://player.vimeo.com/video/${id}`}
-          title={`Vimeo ${id}`}
-          allow="autoplay; fullscreen; picture-in-picture"
-          allowFullScreen
-        ></iframe>
+    <div className="relative">
+      <div
+        ref={ref}
+        className="overflow-x-auto scroll-smooth snap-x snap-mandatory bg-[#0b0b0b] rounded-xl p-4 flex gap-6"
+        style={{ scrollbarWidth: "none" }}
+      >
+        {ids.map((id) => (
+          <div key={id} className="min-w-full snap-start">
+            <div className="video-wrap">
+              <iframe
+                src={`https://player.vimeo.com/video/${id}`}
+                title={`Vimeo ${id}`}
+                allow="autoplay; fullscreen; picture-in-picture"
+                allowFullScreen
+              ></iframe>
+            </div>
+          </div>
+        ))}
       </div>
-    </SwiperSlide>
+      <button
+        onClick={() => scrollBy(-1)}
+        className="absolute left-2 top-1/2 -translate-y-1/2 bg-white/80 text-black rounded-full w-10 h-10 grid place-items-center"
+        aria-label="Vorige"
+      >
+        ‹
+      </button>
+      <button
+        onClick={() => scrollBy(1)}
+        className="absolute right-2 top-1/2 -translate-y-1/2 bg-white/80 text-black rounded-full w-10 h-10 grid place-items-center"
+        aria-label="Volgende"
+      >
+        ›
+      </button>
+    </div>
   );
 }
 
@@ -35,42 +65,14 @@ export default function Portfolio() {
       <div className="max-w-6xl mx-auto px-4">
         <h2 className="text-2xl md:text-3xl font-bold text-center mb-10">Portfolio</h2>
 
-        {/* TV werk */}
         <div className="mb-14">
           <h3 className="text-xl md:text-2xl font-semibold mb-4">TV werk</h3>
-          <Swiper
-            modules={[Navigation, Pagination, Keyboard]}
-            navigation
-            pagination={{ clickable: true }}
-            keyboard={{ enabled: true }}
-            loop
-            spaceBetween={24}
-            slidesPerView={1}
-            className="bg-[#0b0b0b] rounded-xl p-4 w-full"
-          >
-            {tvIds.map((id) => (
-              <VideoSlide key={id} id={id} />
-            ))}
-          </Swiper>
+          <Carousel ids={tvIds} />
         </div>
 
-        {/* Corporate werk */}
         <div>
           <h3 className="text-xl md:text-2xl font-semibold mb-4">Corporate werk</h3>
-          <Swiper
-            modules={[Navigation, Pagination, Keyboard]}
-            navigation
-            pagination={{ clickable: true }}
-            keyboard={{ enabled: true }}
-            loop
-            spaceBetween={24}
-            slidesPerView={1}
-            className="bg-[#0b0b0b] rounded-xl p-4 w-full"
-          >
-            {corpIds.map((id) => (
-              <VideoSlide key={id} id={id} />
-            ))}
-          </Swiper>
+          <Carousel ids={corpIds} />
         </div>
       </div>
     </section>
