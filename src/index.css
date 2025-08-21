@@ -6,3 +6,8 @@ html { scroll-behavior: smooth; }
 body { background: #000; color: #e5e7eb; }
 .video-wrap { position: relative; width: 100%; padding-top: 56.25%; }
 .video-wrap iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+
+/* --- Swiper safeguard styles --- */
+.swiper { overflow: hidden; }
+.swiper-wrapper { display: flex !important; }
+.swiper-slide { flex-shrink: 0 !important; width: 100% !important; }
